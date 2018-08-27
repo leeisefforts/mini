@@ -2,3 +2,4 @@ flask
 flask-sqlalchemy
 pymsql
 flask_script
+flask-sqlacodegen
