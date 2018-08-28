@@ -22,7 +22,13 @@ def login():
         result['msg'] = 'error'
         return jsonify(result)
 
-    return "%s - %s" % (login_name, login_pwd)
+    user_info = User.query.filter_by(login_name= login_name).frist()
+    if not user_info:
+        result['code'] = -1
+        result['msg'] = 'error'
+        return jsonify(result)
+
+    return render_template("index/index.html")
 
 @route_user.route("/edit")
 def edit():

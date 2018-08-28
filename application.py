@@ -7,11 +7,10 @@ import os
 class Application(Flask):
     def __int__(self, import_name, template_folder= None, root_path =None, static_folder =None):
         super(Application, self).__init__(self, import_name, template_folder= template_folder, root_path = root_path, static_folder= None)
-        self.config.from_pyfile('config/base_setting.py')
-
-        if "ops_config" in os.environ:
-            self.config.from_pyfile('config/%s_setting.py' % (os.environ["ops_config"]))
-        self.config.from_pyfile('config/production_setting.py')
+        self.config.from_pyfile('config/local_setting.py')
+        self.config.setdefault('SQLALCHEMY_TRACK_MODIFICATIONS', True)
+        # if "ops_config" in os.environ:
+        #     self.config.from_pyfile('config/%s_setting.py' % (os.environ["ops_config"]))
 
         db.init_app(self)
 

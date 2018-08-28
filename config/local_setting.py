@@ -1,5 +1,5 @@
-SQLALCHEMY_DATABASE_URL = 'myusql+pymsql://wechat_db_u:aTalent2018!@52.80.48.214/mina'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
+SQLALCHEMY_DATABASE_URL = 'mysql+pymsql://wechat_db_u:aTalent2018!@52.80.48.214/mina'
 SQLALCHEMY_ECHO = True
 SQLALCHEMY_ENCODING = "UTF-8"
-DEBUG = True
+DEBUG = False
