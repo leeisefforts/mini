@@ -1,5 +1,9 @@
-SQLALCHEMY_TRACK_MODIFICATIONS = False
-SQLALCHEMY_DATABASE_URL = 'mysql+pymsql://wechat_db_u:aTalent2018!@52.80.48.214/mina'
-SQLALCHEMY_ECHO = True
-SQLALCHEMY_ENCODING = "UTF-8"
-DEBUG = False
+DEBUG = True
+SQLALCHEMY_ECHO = False
+SQLALCHEMY_DATABASE_URL = 'mysql+pymysql://wechat_db_u:aTalent2018!@52.80.48.214/mina'
+SQLALCHEMY_TRACK_MODIFICATIONS = True
+SQLALCHEMY_ENCODING = "utf8mb4"
+SQLALCHEMY_BINDS = {
+    'mina': "mysql+pymysql://wechat_db_u:aTalent2018!@52.80.48.214/mina"
+}
+

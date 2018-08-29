@@ -16,8 +16,8 @@ class UrlManager(object):
         path = "/static" + path
         return UrlManager.buildUrl(path)
 
-    # @staticmethod
-    # def buildImageUrl( path ):
-    #     app_config = app.config['APP']
-    #     url = app_config['domain'] + app.config['UPLOAD']['prefix_url'] + path
-    #     return url
+    @staticmethod
+    def buildImageUrl( path ):
+        app_config = app.config['APP']
+        url = app_config['domain'] + app.config['UPLOAD']['prefix_url'] + path
+        return url

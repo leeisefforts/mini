@@ -22,7 +22,7 @@ def login():
         result['msg'] = 'error'
         return jsonify(result)
 
-    user_info = User.query.filter_by(login_name= login_name).frist()
+    user_info = User.query.filter_by(login_name=login_name).first()
     if not user_info:
         result['code'] = -1
         result['msg'] = 'error'
