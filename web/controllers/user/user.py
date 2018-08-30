@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request , jsonify
 from common.models.User import User
+from common.libs.user.UserService import UserService
 route_user = Blueprint("user_page", __name__)
 
 @route_user.route("/login", methods=["GET","POST"])
@@ -25,10 +26,15 @@ def login():
     user_info = User.query.filter_by(login_name=login_name).first()
     if not user_info:
         result['code'] = -1
-        result['msg'] = 'error'
+        result['msg'] = '账号错误'
         return jsonify(result)
 
-    return render_template("index/index.html")
+    if user_info.login_pwd != UserService.genePwd(login_pwd, user_info.login_salt):
+        result['code'] = -1
+        result['msg'] = '密码错误'
+        return jsonify(result)
+
+    return jsonify(result)
 
 @route_user.route("/edit")
 def edit():
