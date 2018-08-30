@@ -1,6 +1,9 @@
-from flask import Blueprint, render_template, request , jsonify
+from flask import Blueprint, render_template, request , jsonify, make_response, redirect
 from common.models.User import User
 from common.libs.user.UserService import UserService
+from application import app
+from common.libs.UrlManager import UrlManager
+import json
 route_user = Blueprint("user_page", __name__)
 
 @route_user.route("/login", methods=["GET","POST"])
@@ -34,7 +37,11 @@ def login():
         result['msg'] = '密码错误'
         return jsonify(result)
 
-    return jsonify(result)
+    response = make_response(json.dumps(result))
+    response.set_cookie(app.config['AUTH_COOKIE_NAME'], "%s#%s" % (UserService.geneAuthCode(user_info), user_info.uid))
+
+
+    return response
 
 @route_user.route("/edit")
 def edit():
@@ -43,3 +50,9 @@ def edit():
 @route_user.route("/reset-pwd")
 def resetPwd():
     return render_template("user/reset_pwd.html")
+
+@route_user.route("/logout")
+def logout():
+    response = make_response(redirect((UrlManager.buildUrl("/user/login"))))
+    response.delete_cookie(app.config['AUTH_COOKIE_NAME'])
+    return response

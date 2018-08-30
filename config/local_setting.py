@@ -7,3 +7,15 @@ SQLALCHEMY_BINDS = {
     'mina': "mysql+pymysql://wechat_db_u:aTalent2018!@52.80.48.214/mina"
 }
 
+AUTH_COOKIE_NAME = "UserCookie"
+
+## 过滤url
+IGNORE_URLS = [
+    "^/user/login"
+]
+
+IGNORE_CHECK_LOGIN_URLS = [
+    "^/static",
+    "^/favicon.ico"
+
+]
