@@ -1,15 +1,16 @@
-from flask import Blueprint, render_template
+from flask import Blueprint
+from common.libs.Helper import ops_render
 
 route_finance = Blueprint("finance_page", __name__)
 
 @route_finance.route("/index")
 def index():
-    return render_template("finance/index.html")
+    return ops_render("finance/index.html")
 
 @route_finance.route("/account")
 def account():
-    return render_template("finance/account.html")
+    return ops_render("finance/account.html")
 
 @route_finance.route("/pay-info")
 def pay_info():
-    return render_template("finance/pay_info.html")
+    return ops_render("finance/pay_info.html")

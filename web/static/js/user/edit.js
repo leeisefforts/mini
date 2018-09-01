@@ -23,7 +23,7 @@ var user_edit_ops = {
             }
 
             if( !email || email.length < 2 ){
-                common_ops.tip( "请输入符合规范的邮箱~~",nickname_target );
+                common_ops.tip( "请输入符合规范的邮箱~~",email_target );
                 return false;
             }
 
