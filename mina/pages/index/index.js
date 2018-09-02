@@ -37,5 +37,35 @@ Page({
         });
       }
     });
+  },
+    
+  login: function (e) {
+        if(!e.detail.userInfo){
+          app.alert({'content': '授权失败'});
+          return;
+        }
+
+        var data = e.detail.userInfo;
+
+        wx.login({
+          success:function(res){
+            if(!res.code){
+              app.alert({ 'content': '授权失败' });
+              return;
+            }
+
+
+            data['code'] = res.code
+            wx.request({
+              url: 'http://127.0.0.1:5000/api/member/login',
+              method: 'POST',
+              header: app.getRequestHeader(),
+              data: data,
+              success: function (res) {
+
+              }
+            })
+          }
+        })
   }
 });

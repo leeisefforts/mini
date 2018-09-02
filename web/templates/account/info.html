@@ -56,7 +56,21 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-									<tr><td colspan="2">暂无数据</td></tr>
+
+                                    {% if log %}
+
+                                        {% for l in log %}
+                                             <tr>
+                                            <td>{{ l.created_time }}</td>
+                                            <td>{{ l.target_url }}</td>
+                                             </tr>
+                                        {% endfor %}
+
+
+                                    {% else %}
+                                           <tr>  <td colspan="2">暂无数据</td> </tr>
+                                    {% endif %}
+                                    </tr>
                                      </tbody>
                                 </table>
                             </div>

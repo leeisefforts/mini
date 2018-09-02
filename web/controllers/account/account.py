@@ -3,6 +3,7 @@ from common.libs.Helper import ops_render, iPagination , getCurrentDate
 from common.libs.UrlManager import UrlManager
 from common.libs.user.UserService import UserService
 from common.models.User import User
+from common.models.log.AppAccessLog import AppAccessLog
 from sqlalchemy import or_
 from application import app, db
 route_account = Blueprint("account_page", __name__)
@@ -52,10 +53,13 @@ def info():
     if not info:
         return redirect(UrlManager.buildUrl("account/index"))
 
+    log = AppAccessLog.query.filter_by(uid = uid).all()
     resp_data['info'] = info
+    resp_data['log'] = log
 
     return ops_render("account/info.html", {
-        'info': resp_data['info']
+        'info': resp_data['info'],
+        'log': resp_data['log']
     })
 
 @route_account.route("/set", methods= ["GET","POST"])
@@ -135,6 +139,47 @@ def set():
     model_user.created_time = getCurrentDate()
 
     db.session.add(model_user)
+    db.session.commit()
+
+    return jsonify(resp)
+
+
+@route_account.route("/ops", methods=["POST"])
+def ops():
+    resp = {
+        'code': 200,
+        'msg':'操作成功',
+        'data': {}
+    }
+
+    req = request.values
+    id = req['id'] if 'id' in req else ''
+    act = req['act'] if 'act' in req else ''
+
+
+    if not id:
+        resp['code'] = -1
+        resp['msg'] = "操作失败1"
+        return jsonify(resp)
+
+    if act not in ['remove', 'recover']:
+        resp['act'] = -1
+        resp['act'] = "操作失败2"
+        return jsonify(resp)
+
+    user_info = User.query.filter_by(uid=id).first()
+
+    if not user_info:
+        resp['code'] = -1
+        resp['msg'] = "操作失败3"
+
+    if act == "remove":
+        user_info.status = 0
+    elif act == "recover":
+        user_info.status = 1
+
+    user_info.updated_time = getCurrentDate()
+    db.session.add(user_info)
     db.session.commit()
 
     return jsonify(resp)

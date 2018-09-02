@@ -39,6 +39,11 @@ def login():
         result['msg'] = '密码错误'
         return jsonify(result)
 
+    if user_info.status == -1:
+        result['code'] = -1
+        result['msg'] = '账号失效'
+        return jsonify(result)
+
     response = make_response(json.dumps(result))
     response.set_cookie(app.config['AUTH_COOKIE_NAME'], "%s#%s" % (UserService.geneAuthCode(user_info), user_info.uid))
 

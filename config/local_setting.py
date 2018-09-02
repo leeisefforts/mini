@@ -11,7 +11,9 @@ AUTH_COOKIE_NAME = "UserCookie"
 
 ## 过滤url
 IGNORE_URLS = [
-    "^/user/login"
+    "^/user/login",
+    "^/api"
+
 ]
 
 IGNORE_CHECK_LOGIN_URLS = [
@@ -26,3 +28,6 @@ STATUS_MAPPING = {
     "1": "正常",
     "0": "删除"
 }
+
+APPID = "wx1f244139ab0c54c8"
+SECRET = "6e4fab0d29a50571678ba1559e627ebc"
