@@ -13,10 +13,10 @@
       </view>
       <view class="bd">
          
-        <!-- <view class="confirm-btn" bindtap='goToIndex'>
+        <view class="confirm-btn" bindtap='goToIndex' wx:if="{{ regFlag}}">
           <text >订购</text>
-        </view> -->
-        <button class="confirm-btn"  open-type="getUserInfo" bindgetuserinfo="login">授权登录</button>
+        </view>
+        <button class="confirm-btn"  open-type="getUserInfo" bindgetuserinfo="login" wx:if="{{ !regFlag}}">授权登录</button>
 
         <text class="copyright">@Bryant Lee</text>
       </view>

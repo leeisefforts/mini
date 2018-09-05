@@ -17,15 +17,7 @@
 <div class="row">
     <div class="col-lg-12">
         <form class="form-inline wrap_search">
-            <div class="row  m-t p-w-m">
-                <div class="form-group">
-                    <select name="status" class="form-control inline">
-                        <option value="-1">请选择状态</option>
-                        <option value="1">正常</option>
-                        <option value="0">已删除</option>
-                    </select>
-                </div>
-            </div>
+            {% include "common/tab_search.html" %}
             <hr>
             <div class="row">
                 <div class="col-lg-12">
@@ -67,4 +59,7 @@
         </table>
     </div>
 </div>
+{% endblock %}
+{% block js  %}
+        <script src="{{ buildStaticUrl('/js/food/cat.js') }}"></script>
 {% endblock %}

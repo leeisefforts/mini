@@ -5,7 +5,8 @@ Page({
   data: {
     remind: '加载中',
     angle: 0,
-    userInfo: {}
+    userInfo: {},
+    regFlag: true
   },
   goToIndex:function(){
     wx.switchTab({
@@ -15,7 +16,9 @@ Page({
   onLoad:function(){
     wx.setNavigationBarTitle({
       title: app.globalData.shopName
-    })
+    });
+
+    this.checkLogin();
   },
   onShow:function(){
 
@@ -38,8 +41,38 @@ Page({
       }
     });
   },
-    
+
+  checkLogin: function(){
+    var me = this;
+    wx.login({
+      success: function (res) {
+        if (!res.code) {
+          app.alert({ 'content': '授权失败' });
+          return;
+        }
+
+        wx.request({
+          url: app.buildUrl('/member/check-reg'),
+          method: 'POST',
+          header: app.getRequestHeader(),
+          data: { 'code': res.code} ,
+          success: function (res) {
+            if (res.data.code != 200){
+              me.setData({
+                  regFlag: false
+              });
+
+              return;
+            }
+            app.setCache("token", res.data.data.token)
+            me.goToIndex();
+          }
+        })
+      }
+    })
+  },
   login: function (e) {
+    var me =this;
         if(!e.detail.userInfo){
           app.alert({'content': '授权失败'});
           return;
@@ -57,12 +90,18 @@ Page({
 
             data['code'] = res.code
             wx.request({
-              url: 'http://127.0.0.1:5000/api/member/login',
+              url: app.buildUrl('/member/login'),
               method: 'POST',
               header: app.getRequestHeader(),
               data: data,
               success: function (res) {
+                if (res.data.code != 200) {
+                  app.alert({'content': res.msg})
 
+                  return;
+                }
+                app.setCache("token", res.data.data.token)
+                me.goToIndex();
               }
             })
           }
