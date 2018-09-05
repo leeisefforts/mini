@@ -24,7 +24,11 @@
                     <select name="cat_id" class="form-control select2-hidden-accessible" tabindex="-1"
                             aria-hidden="true">
                         <option value="0">请选择分类</option>
-                        <option value="8">111</option>
+                        {% if cat_info %}
+                            {% for cat in cat_info %}
+                             <option value="{{ cat.id }}">{{ cat.name }}</option>
+                            {% endfor %}
+                        {% endif %}
                     </select>
                 </div>
             </div>
@@ -85,4 +89,22 @@
         </div>
     </div>
 </div>
+{% endblock %}
+{%  block css %}
+    <link href="{{ buildStaticUrl( '/plugins/select2/select2.min.css' ) }}" rel="stylesheet">
+    <link href="{{ buildStaticUrl( '/plugins/tagsinput/jquery.tagsinput.min.css' ) }}" rel="stylesheet">
+{% endblock %}
+{% block js %}
+
+    <script src="{{ buildStaticUrl('/plugins/ueditor/ueditor.config.js') }}"></script>
+    <script src="{{ buildStaticUrl('/plugins/ueditor/ueditor.all.min.js') }}"></script>
+    <script src="{{ buildStaticUrl('/plugins/ueditor/lang/zh-cn/zh-cn.js') }}"></script>
+
+    <script src="{{ buildStaticUrl( '/plugins/select2/select2.pinyin.js' ) }}"></script>
+    <script src="{{ buildStaticUrl( '/plugins/select2/zh-CN.js' ) }}"></script>
+    <script src="{{ buildStaticUrl( '/plugins/select2/pinyin.core.js' ) }}"></script>
+
+    <script src="{{ buildStaticUrl( '/plugins/tagsinput/jquery.tagsinput.min.js' ) }}"></script>
+
+    <script src="{{ buildStaticUrl('/js/food/set.js') }}"></script>
 {% endblock %}

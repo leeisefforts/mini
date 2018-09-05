@@ -12,7 +12,8 @@ AUTH_COOKIE_NAME = "UserCookie"
 ## 过滤url
 IGNORE_URLS = [
     "^/user/login",
-    "^/api"
+    "^/api",
+    "^/upload"
 
 ]
 
