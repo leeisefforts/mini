@@ -32,3 +32,13 @@ STATUS_MAPPING = {
 
 APPID = "wx1f244139ab0c54c8"
 SECRET = "6e4fab0d29a50571678ba1559e627ebc"
+
+UPLOAD = {
+    'ext': ['jpg', 'gif', 'bmp', 'png', 'jpeg'],
+    'prefix_path': '/web/static/upload/',
+    'prefix_url': '/static/upload/'
+}
+
+APP = {
+    'domain':'http://127.0.0.1:5000'
+}
