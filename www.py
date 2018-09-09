@@ -1,5 +1,6 @@
 from application import app
 from web.interceptors.AuthIntercetor import *
+from web.interceptors.ApiIntercetor import *
 from web.interceptors.Error import *
 
 from web.controllers.index import route_index

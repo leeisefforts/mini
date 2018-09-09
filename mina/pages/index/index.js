@@ -21,7 +21,7 @@ Page({
     this.checkLogin();
   },
   onShow:function(){
-
+    
   },
   onReady: function(){
     var that = this;

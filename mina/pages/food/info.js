@@ -2,6 +2,7 @@
 //获取应用实例
 var app = getApp();
 var WxParse = require('../../wxParse/wxParse.js');
+var utiles = require('../../utils/util.js');
 
 Page({
     data: {
@@ -17,24 +18,17 @@ Page({
         shopCarInfo: {},
         shopType: "addShopCar",//购物类型，加入购物车或立即购买，默认为加入购物车,
         id: 0,
-        shopCarNum: 4,
+        shopCarNum: 0,
         commentCount:2
     },
-    onLoad: function () {
+    onLoad: function (e) {
         var that = this;
 
+        this.setData({
+          id: e.id
+        });
         that.setData({
-            "info": {
-                "id": 1,
-                "name": "小鸡炖蘑菇",
-                "summary": '<p>多色可选的马甲</p><p><img src="http://www.timeface.cn/uploads/times/2015/07/071031_f5Viwp.jpg"/></p><p><br/>相当好吃了</p>',
-                "total_count": 2,
-                "comment_count": 2,
-                "stock": 2,
-                "price": "80.00",
-                "main_image": "/images/food.jpg",
-                "pics": [ '/images/food.jpg','/images/food.jpg' ]
-            },
+            "info": {},
             buyNumMax:2,
             commentList: [
                 {
@@ -60,6 +54,9 @@ Page({
 
         WxParse.wxParse('article', 'html', that.data.info.summary, that, 5);
     },
+    onShow:function(){
+      this.getInfo();
+    },
     goShopCar: function () {
         wx.reLaunch({
             url: "/pages/cart/index"
@@ -78,7 +75,25 @@ Page({
         this.bindGuiGeTap();
     },
     addShopCar: function () {
+      var me = this;
+      var data = {
+        'id': me.data.info.id,
+        'number': me.data.buyNumber
+      };
 
+      wx.request({
+        url: app.buildUrl("/cart/set"),
+        method: "POST",
+        header: app.getRequestHeader(),
+        data: data,
+        success: function (res) {
+          var resp = res.data;
+          app.alert({ "content": resp.msg });
+          me.setData({
+            hideShopPopup: true
+          });
+        }
+      })
     },
     buyNow: function () {
         wx.navigateTo({
@@ -126,5 +141,58 @@ Page({
         this.setData({
             swiperCurrent: e.detail.current
         })
+    },
+
+    getInfo:function(){
+      var me = this;
+
+      wx.request({
+        url: app.buildUrl("/food/info"),
+        method: "GET",
+        header: app.getRequestHeader(),
+        data: {
+          id: me.data.id
+        },
+        success: function(res){
+          var resp = res.data;
+          if (resp.code != 200) {
+            app.alert({ "content": resp.msg });
+            return;
+          }
+
+          me.setData({
+            info: resp.data.info,
+            buyNumMax: resp.data.info.stock,
+            shopCarNum: resp.data.cart_number
+          });
+
+          WxParse.wxParse('article', 'html', me.data.info.summary, me, 5);
+        }
+      });
+    },
+    onShareAppMessage: function(){
+      var me = this;
+      return {
+        title: me.data.info.name,
+        path: '/page/food/info?id='+ me.data.info.id,
+        success: function(res){
+          wx.request({
+            url: app.buildUrl("/member/share"),
+            method: "POST",
+            header: app.getRequestHeader(),
+            data: {
+              url: utiles.getCurrentPageUrlWithArgs()
+            },
+            success: function (res) {
+              var resp = res.data;
+              if (resp.code != 200) {
+                app.alert({ "content": resp.msg });
+                return;
+              }
+            }
+          });
+        },
+        fail:function(res){}
+      }
     }
 });

@@ -12,10 +12,15 @@ AUTH_COOKIE_NAME = "UserCookie"
 ## 过滤url
 IGNORE_URLS = [
     "^/user/login",
-    "^/api",
     "^/upload"
 
 ]
+
+
+API_IGNORE_URLS = [
+    "^/api"
+]
+
 
 IGNORE_CHECK_LOGIN_URLS = [
     "^/static",
