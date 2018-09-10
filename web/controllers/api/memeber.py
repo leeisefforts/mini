@@ -1,6 +1,6 @@
 from web.controllers.api import route_api
 from flask import request, jsonify, g
-from application import  app, db
+from application import app, db
 import requests, json
 
 from common.libs.Helper import getCurrentDate
@@ -9,12 +9,13 @@ from common.models.member.OauthMemberBind import OauthMemberBind
 from common.models.food.WxShareHistory import WxShareHistory
 from common.libs.member.memberService import MemberService
 
-@route_api.route("/member/login", methods =["GET", "POST"])
+
+@route_api.route("/member/login", methods=["GET", "POST"])
 def login():
-    resp = {'code': 200 , 'msg': "操作成功"}
+    resp = {'code': 200, 'msg': "操作成功"}
     req = request.values
     code = req['code'] if 'code' in req else ''
-    if not code or len(code) <1:
+    if not code or len(code) < 1:
         resp['code'] = -1
         resp['msg'] = '需要code'
         return jsonify(resp)
@@ -25,11 +26,10 @@ def login():
     gender = req['gender'] if 'gender' in req else ''
     avatarUrl = req['avatarUrl'] if 'avatarUrl' in req else ''
 
-
     '''
         判断是否注册过
     '''
-    bind_info = OauthMemberBind.query.filter_by(openid =openid, type = 1).first()
+    bind_info = OauthMemberBind.query.filter_by(openid=openid, type=1).first()
     if not bind_info:
         model_member = Member()
         model_member.nickname = nickname
@@ -62,12 +62,13 @@ def login():
 
     return jsonify(resp)
 
-@route_api.route("/member/check-reg", methods =["GET", "POST"])
+
+@route_api.route("/member/check-reg", methods=["GET", "POST"])
 def check_reg():
-    resp = {'code': 200 , 'msg': "操作成功"}
+    resp = {'code': 200, 'msg': "操作成功"}
     req = request.values
     code = req['code'] if 'code' in req else ''
-    if not code or len(code) <1:
+    if not code or len(code) < 1:
         resp['code'] = -1
         resp['msg'] = '需要code'
         return jsonify(resp)
@@ -90,7 +91,7 @@ def check_reg():
     return jsonify(resp)
 
 
-@route_api.route("/member/share",methods = [ "POST" ])
+@route_api.route("/member/share", methods=["POST"])
 def memberShare():
     resp = {'code': 200, 'msg': '操作成功~', 'data': {}}
     req = request.values

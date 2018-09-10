@@ -15,25 +15,8 @@ Page({
                 pay_price: "85.00",
                 yun_price: 0.00,
                 total_price: "85.00",
-                address: {
-                    name: "编程浪子",
-                    mobile: "12345678901",
-                    address: "上海市浦东新区XX"
-                },
-                goods: [
-                    {
-                        name: "小鸡炖蘑菇",
-                        price: "85.00",
-                        unit: 1,
-                        pic_url: "/images/food.jpg"
-                    },
-                    {
-                        name: "小鸡炖蘑菇",
-                        price: "85.00",
-                        unit: 1,
-                        pic_url: "/images/food.jpg"
-                    }
-                ]
+                address: {},
+                goods: []
             }
         });
     }

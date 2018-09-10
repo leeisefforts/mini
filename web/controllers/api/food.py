@@ -51,7 +51,7 @@ def foodSearch():
     p = int(req['p']) if 'p' in req else 1
     if p < 1:
         p = 1
-    mixkw = str(req['mixkw']) if 'mixkw' in req else ''
+    mixkw = str(req['mix_kw']) if 'mix_kw' in req else ''
 
     query = Food.query.filter_by(status = 1)
     page_size = 10

@@ -3,6 +3,8 @@ from application import app,db
 from common.models.food.FoodStockChangeLog import FoodStockChangeLog
 from common.models.food.Food import Food
 from common.libs.Helper import getCurrentDate
+
+
 class FoodService():
 
     @staticmethod

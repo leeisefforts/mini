@@ -23,7 +23,7 @@ class MemberService():
     @staticmethod
     def getOpenId(code):
         url = 'https://api.weixin.qq.com/sns/jscode2session?appid={0}&secret={1}&js_code={2}&grant_type=authorization_code'.format(
-            app.config['APPID'], app.config['SECRET'], code)
+            app.config['MINA_APP']['appid'], app.config['MINA_APP']['appkey'], code)
 
         r = requests.get(url)
         res = json.loads(r.text)

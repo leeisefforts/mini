@@ -35,8 +35,13 @@ STATUS_MAPPING = {
     "0": "删除"
 }
 
-APPID = "wx1f244139ab0c54c8"
-SECRET = "6e4fab0d29a50571678ba1559e627ebc"
+MINA_APP = {
+    'appid':'wx1f244139ab0c54c8',
+    'appkey':'6e4fab0d29a50571678ba1559e627ebc',
+    'paykey':'TM8KwVFRlp0hsTWMQTxLplfFIzmk7csr',
+    'mch_id':'1513434041',
+    'callback_url':'/api/order/callback'
+}
 
 UPLOAD = {
     'ext': ['jpg', 'gif', 'bmp', 'png', 'jpeg'],
@@ -46,4 +51,19 @@ UPLOAD = {
 
 APP = {
     'domain':'http://127.0.0.1:5000'
+}
+
+PAY_STATUS_MAPPING = {
+    "1":"已支付",
+    "-8":"待支付",
+    "0":"已关闭"
+}
+
+PAY_STATUS_DISPLAY_MAPPING = {
+    "0":"订单关闭",
+    "1":"支付成功",
+    "-8":"待支付",
+    "-7":"待发货",
+    "-6":"待确认",
+    "-5":"待评价"
 }
