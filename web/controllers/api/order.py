@@ -13,6 +13,7 @@ from common.models.member.OauthMemberBind import OauthMemberBind
 from common.libs.pay.payService import PayService
 from common.libs.cart.cartService import CartService
 from common.libs.pay.wechatService import WeChatService
+from common.models.member.MemberAddress import MemberAddress
 
 @route_api.route("/order/info", methods=["POST"])
 def orderInfo():
@@ -47,11 +48,17 @@ def orderInfo():
             pay_price = pay_price + item.price * int(food_dic[item.id])
             data_food_list.append(tmp_data)
 
-    default_address = {
-        'name': 'lee',
-        'mobile': '18616396821',
-        'address': '上海市普陀区'
-    }
+    # 获取地址
+    address_info = MemberAddress.query.filter_by(is_default=1, member_id=member_info.id, status=1).first()
+    default_address = ''
+    if address_info:
+        default_address = {
+            "id": address_info.id,
+            "name": address_info.nickname,
+            "mobile": address_info.mobile,
+            "address": "%s%s%s%s" % (
+            address_info.province_str, address_info.city_str, address_info.area_str, address_info.address)
+        }
     resp['data']['food_list'] = data_food_list
     resp['data']['pay_price'] = str(pay_price)
     resp['data']['yun_price'] = str(yun_price)
@@ -66,8 +73,11 @@ def orderCreate():
     resp = {'code': 200, 'msg': "操作成功", 'data': {}}
     req = request.values
 
-    params_goods = req['goods'] if 'goods' in req else None
     type = req['type'] if 'type' in req else ''
+    note = req['note'] if 'note' in req else ''
+    express_address_id = int(req['express_address_id']) if 'express_address_id' in req and req[
+        'express_address_id'] else 0
+    params_goods = req['goods'] if 'goods' in req else None
 
     items = []
     if params_goods:
@@ -78,9 +88,27 @@ def orderCreate():
         resp['msg'] = "下单失败: 没有选择商品"
         return jsonify(resp)
 
+    address_info = MemberAddress.query.filter_by(id=express_address_id).first()
+    if not address_info or not address_info.status:
+        resp['code'] = -1
+        resp['msg'] = "下单失败：快递地址不对~~"
+        return jsonify(resp)
+
     member_info = g.member_info
     target = PayService()
-    resp = target.createOrder(member_info.id, items, params= {})
+
+    params = {
+        "note": note,
+        'express_address_id': address_info.id,
+        'express_info': {
+            'mobile': address_info.mobile,
+            'nickname': address_info.nickname,
+            "address": "%s%s%s%s" % (
+            address_info.province_str, address_info.city_str, address_info.area_str, address_info.address)
+        }
+    }
+
+    resp = target.createOrder(member_info.id, items, params= params)
 
     if resp['code'] == 200 and type =="cart":
         CartService.delItems(member_info.id, items)
@@ -177,4 +205,33 @@ def orderCallback():
     target_pay.addPayCallbackData(pay_order_id= pay_order_info.id, data=request.data)
 
     return target_wechat.dict_to_xml(result_data), header
+
+
+@route_api.route("/order/ops", methods=["POST"])
+def orderOps():
+    resp = {'code': 200, 'msg': '操作成功~', 'data': {}}
+    req = request.values
+    member_info = g.member_info
+    order_sn = req['order_sn'] if 'order_sn' in req else ''
+    act = req['act'] if 'act' in req else ''
+    pay_order_info = PayOrder.query.filter_by(order_sn=order_sn, member_id=member_info.id).first()
+    if not pay_order_info:
+        resp['code'] = -1
+        resp['msg'] = "系统繁忙,请稍后再试"
+        return jsonify(resp)
+
+    if act == "cancel":
+        target_pay = PayService()
+        ret = target_pay.closeOrder(pay_order_id=pay_order_info.id)
+        if not ret:
+            resp['code'] = -1
+            resp['msg'] = "系统繁忙,请稍后再试"
+            return jsonify(resp)
+    elif act == "confirm":
+        pay_order_info.express_status = 1
+        pay_order_info.updated_time = getCurrentDate()
+        db.session.add(pay_order_info)
+        db.session.commit()
+
+    return jsonify(resp)
 

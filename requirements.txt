@@ -1,5 +1,7 @@
 flask
 flask-sqlalchemy
-pymsql
+flask-debugtoolbar
+mysqlclient
 flask_script
-flask-sqlacodegen
+requests
+uwsgi

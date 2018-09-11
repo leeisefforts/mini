@@ -10,6 +10,7 @@
     "pages/my/addressList",
     "pages/my/addressSet",
     "pages/my/commentList",
+    "pages/my/comment",
     "pages/my/index"
   ],
   "window": {

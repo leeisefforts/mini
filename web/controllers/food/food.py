@@ -4,6 +4,7 @@ from common.libs.Helper import ops_render, iPagination, getCurrentDate, getDictF
 from common.models.food.Food import Food
 from common.models.food.FoodCat import FoodCat
 from common.models.food.FoodStockChangeLog import FoodStockChangeLog
+from common.models.food.FoodSaleChangeLog import FoodSaleChangeLog
 from common.libs.food.foodService import FoodService
 from application import app, db
 from sqlalchemy import or_
@@ -65,8 +66,12 @@ def info():
     stock_change_list = FoodStockChangeLog.query.filter( FoodStockChangeLog.food_id == id )\
         .order_by( FoodStockChangeLog.id.desc() ).all()
 
+    sale_change_list = FoodSaleChangeLog.query.filter( FoodSaleChangeLog.food_id == id )\
+        .order_by( FoodSaleChangeLog.id.desc() ).all()
+
     resp_data['info'] = info
     resp_data['stock_change_list'] = stock_change_list
+    resp_data['sale_change_list'] = sale_change_list
     resp_data['current'] = 'index'
     return ops_render( "food/info.html",resp_data )
 

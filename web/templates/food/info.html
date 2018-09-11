@@ -68,13 +68,24 @@
                                         <th>会员名称</th>
                                         <th>购买数量</th>
                                         <th>购买价格</th>
-                                        <th>订单状态</th>
+                                        <th>购买时间</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td colspan="4">暂无销售记录</td>
-                                    </tr>
+                                    <tbody>
+                                     {% if sale_change_list %}
+                                        {% for item in sale_change_list %}
+                                        <tr>
+                                        <td>{{ item.member_name }}</td>
+                                            <td>{{ item.quantity }}</td>
+                                        <td>{{ item.price }}</td>
+                                        <td>{{ item.created_time }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                            <tr><td colspan="3">暂无数据~~</td></tr>
+                                        {% endif %}
+                                    </tbody>
                                     </tbody>
                                 </table>
                             </div>

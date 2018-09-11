@@ -27,7 +27,8 @@ Page({
 
       var data = {
         type: me.data.params.type,
-        goods: JSON.stringify(me.data.params.goods)
+        goods: JSON.stringify(me.data.params.goods),
+        express_address_id: me.data.default_address.id
       };
 
       wx.request({
@@ -83,7 +84,13 @@ Page({
               yun_price: resp.data.yun_price,
               pay_price: resp.data.pay_price,
               total_price: resp.data.total_price
-            })
+            });
+
+            if (me.data.default_address) {
+              me.setData({
+                express_address_id: me.data.default_address.id
+              });
+            }
           }
       });
     }

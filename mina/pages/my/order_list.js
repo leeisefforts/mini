@@ -15,9 +15,9 @@ Page({
         this.onShow();
     },
     orderDetail: function (e) {
-        wx.navigateTo({
-            url: "/pages/my/order_info"
-        })
+      wx.navigateTo({
+        url: "/pages/my/order_info?order_sn=" + e.currentTarget.dataset.id
+      })
     },
     onLoad: function (options) {
         // 生命周期函数--监听页面加载
@@ -104,5 +104,48 @@ Page({
           })
         }
       });
-    }
+    },
+
+  orderCancel: function(e) {
+      this.orderOps(e.currentTarget.dataset.id, "cancel", "确认取消订单?");
+
+    },
+
+  orderConfirm:function(e){
+    this.orderOps(e.currentTarget.dataset.id, "confirm", "确认收货?");
+    },
+
+    orderOps:function(order_sn , act ,msg) {
+      var me = this;
+      var params = {
+        "content" :msg,
+        "cb_confirm" : function(){
+          wx.request({
+            url: app.buildUrl("/order/ops"),
+            method: 'POST',
+            header: app.getRequestHeader(),
+            data: {
+              order_sn: order_sn,
+              act: act
+            },
+            success: function (res) {
+              var resp = res.data;
+              app.alert({ "content": resp.msg });
+              if (resp.code == 200) {
+                me.getPayOrder();
+                return;
+              }
+            }
+          });
+        }
+      };
+
+      app.tip(params);
+    },
+
+  orderComment: function(e){
+    wx.navigateTo({
+      url: "/pages/my/comment?order_sn=" + e.currentTarget.dataset.id
+    });
+  }
 })
