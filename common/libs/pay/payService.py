@@ -7,6 +7,7 @@ from common.models.pay.PayOrderCallbackData import PayOrderCallbackData
 from common.models.pay.PayOrderItem import PayOrderItem
 from common.libs.Helper import getCurrentDate
 from common.libs.food.foodService import FoodService
+from common.libs.queue.queueService import QueueService
 from common.models.food.FoodSaleChangeLog import FoodSaleChangeLog
 
 class PayService():
@@ -23,7 +24,6 @@ class PayService():
             if decimal.Decimal(item['price']) < 0:
                 continue_count+=1
                 continue
-
             pay_price = pay_price + decimal.Decimal(item['price']) * int(item['number'])
             foods_id.append(item['id'])
 
@@ -131,6 +131,11 @@ class PayService():
         except Exception as e:
             db.session.rollback()
             return False
+
+        QueueService.addQueue("pay", {
+            "member_id": pay_order_info.member_id,
+            "pay_order_id": pay_order_info.id
+        })
 
 
     def addPayCallbackData(self, pay_order_id=0, type ='pay', data=''):
