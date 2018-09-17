@@ -6,7 +6,7 @@ App({
         userInfo: null,
         version: "1.0",
         shopName: "湘黔绿色农资",
-        domain:"http://127.0.0.1:5000/api"
+      domain:"https://www.fragmenttime.com/api"
     },
     tip:function( params ){
         var that = this;
