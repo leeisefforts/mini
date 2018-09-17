@@ -50,7 +50,7 @@ UPLOAD = {
 }
 
 APP = {
-    'domain':'http://127.0.0.1:5000'
+    'domain':'https://www.fragmenttime.com'
 }
 
 PAY_STATUS_MAPPING = {
