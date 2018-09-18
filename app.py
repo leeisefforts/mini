@@ -6,7 +6,7 @@ import www
 manager.add_command("runserver", Server(use_debugger=True, use_reloader=True))
 
 #job entrance
-manager.add_command("runjob", runJob() )
+manager.add_command("runjob", runJob())
 
 def main():
     manager.run()
