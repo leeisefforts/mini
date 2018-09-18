@@ -2301,7 +2301,7 @@ status</ColNames>
     </column>
     <column id="516" parent="342" name="type">
       <Position>4</Position>
-      <Comment>类型 type 1:wechat </Comment>
+      <Comment>类型 type 1:wechat</Comment>
       <DataType>tinyint(3)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;0&apos;</DefaultExpression>

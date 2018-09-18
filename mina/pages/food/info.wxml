@@ -9,11 +9,11 @@
                 </swiper-item>
             </block>
         </swiper>
-        <view class="dots">
+        <view class="dots">  
             <block wx:for="{{info.pics}}" wx:key="unique">
-                <view class="dot{{index == swiperCurrent ? ' active' : ''}}"></view>
-            </block>
-        </view>
+                <view class="dot{{index == swiperCurrent ? ' active' : ''}}"></view>  
+            </block>  
+        </view>  
    </view>
    <!--商品基本介绍-->
    <view class="goods-info">
@@ -50,7 +50,7 @@
     </view>
 
     <!--底部-->
-    <view class="footer-box">
+    <view class="footer-box">      
         <view class="shop-cart-btn" bindtap="goShopCar">
             <view class="shop-num">({{shopCarNum}})</view>
             <view style='position:absolute;bottom:10rpx;'> 购物车 </view>
@@ -73,7 +73,7 @@
                 </view>
                 <view class="pop-goods-close" bindtap="closePopupTap"></view>
              </view>
-
+             
              <view class="buy-num-box">
                 <view class="num-label">购买数量</view>
                 <view class="num-box">
