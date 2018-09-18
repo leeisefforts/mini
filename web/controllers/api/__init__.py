@@ -7,6 +7,7 @@ from web.controllers.api.cart import *
 from web.controllers.api.order import *
 from web.controllers.api.my import *
 from web.controllers.api.address import *
+from web.controllers.api.dx import *
 
 @route_api.route("/")
 def index():
